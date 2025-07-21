@@ -4,15 +4,43 @@ import random
 import os
 import sys
 
+# Render images
+def resource_path(relative_path):
+    try:
+        base_path = sys._MEIPASS
+    except Exception:
+        base_path = os.path.abspath(".")
 
+    return os.path.join(base_path, relative_path)
+
+# Define variables
 root = Tk()
 root.title("Defuse the bomb!")
-root.iconbitmap("bombicon.ico")
+bomb = resource_path("bombicon.ico")
+root.iconbitmap(bomb)
 loop ='y'
 turns = 10
 guesses =[]
 num = 0
+cipher1, cipher2, cipher3, cipher4 = 0, 0, 0, 0
+cipher1 = str(cipher1)
+cipher2 = str(cipher2)
+cipher3 = str(cipher3)
+cipher4 = str(cipher4)
+bomb_img9 = ("bomb9.png")
+bomb_img8 = ("bomb8.png")
+bomb_img7 = ("bomb7.png")
+bomb_img6 = ("bomb6.png")
+bomb_img5 = ("bomb5.png")
+bomb_img4 = ("bomb4.png")
+bomb_img3 = ("bomb3.png")
+bomb_img2 = ("bomb2.png")
+bomb_img1 = ("bomb1.png")
+bomb_img0 = ("bomb0.png")
+lose_img = ("lose.png")
+win_img = ("win.png")
 
+# Initiatize the 4 digit randomly generated number
 rand1 = random.randint(0, 9)
 
 rand2 = random.randint(0, 9)
@@ -30,41 +58,35 @@ while rand4 == rand3 or rand4 == rand2 or rand4 == rand1:
 # Concatenate the variables into a single answer
 answer = str(rand1) + str(rand2) + str(rand3) + str(rand4)
 
-bomb_img9 = ("bomb9.png")
-bomb_img8 = ("bomb8.png")
-bomb_img7 = ("bomb7.png")
-bomb_img6 = ("bomb6.png")
-bomb_img5 = ("bomb5.png")
-bomb_img4 = ("bomb4.png")
-bomb_img3 = ("bomb3.png")
-bomb_img2 = ("bomb2.png")
-bomb_img1 = ("bomb1.png")
-bomb_img0 = ("bomb0.png")
-lose_img = ("lose.png")
-win_img = ("win.png")
 
-bomb9 = ImageTk.PhotoImage(Image.open(bomb_img9))
-bomb8 = ImageTk.PhotoImage(Image.open(bomb_img8))
-bomb7 = ImageTk.PhotoImage(Image.open(bomb_img7))
-bomb6 = ImageTk.PhotoImage(Image.open(bomb_img6))
-bomb5 = ImageTk.PhotoImage(Image.open(bomb_img5))
-bomb4 = ImageTk.PhotoImage(Image.open(bomb_img4))
-bomb3 = ImageTk.PhotoImage(Image.open(bomb_img3))
-bomb2 = ImageTk.PhotoImage(Image.open(bomb_img2))
-bomb1 = ImageTk.PhotoImage(Image.open(bomb_img1))
-bomb0 = ImageTk.PhotoImage(Image.open(bomb_img0))
-lose = ImageTk.PhotoImage(Image.open(lose_img))
-win = ImageTk.PhotoImage(Image.open(win_img))
+
+# Initialize images
+bomb9 = ImageTk.PhotoImage(Image.open(resource_path(bomb_img9)))
+bomb8 = ImageTk.PhotoImage(Image.open(resource_path(bomb_img8)))
+bomb7 = ImageTk.PhotoImage(Image.open(resource_path(bomb_img7)))
+bomb6 = ImageTk.PhotoImage(Image.open(resource_path(bomb_img6)))
+bomb5 = ImageTk.PhotoImage(Image.open(resource_path(bomb_img5)))
+bomb4 = ImageTk.PhotoImage(Image.open(resource_path(bomb_img4)))
+bomb3 = ImageTk.PhotoImage(Image.open(resource_path(bomb_img3)))
+bomb2 = ImageTk.PhotoImage(Image.open(resource_path(bomb_img2)))
+bomb1 = ImageTk.PhotoImage(Image.open(resource_path(bomb_img1)))
+bomb0 = ImageTk.PhotoImage(Image.open(resource_path(bomb_img0)))
+lose = ImageTk.PhotoImage(Image.open(resource_path(lose_img)))
+win = ImageTk.PhotoImage(Image.open(resource_path(win_img)))
 
 bomb_list = [bomb0, bomb1, bomb2, bomb3, bomb4, bomb5, bomb6, bomb7, bomb8, bomb9]
 
 
+
+# Selecting number for submission
 def button_click(number):
     e.delete(0, END)
     e.insert(0, number)
     global num
+
     num = int(number)
 
+# Preparing Cipher fields for submission
 def field_submit(number,n):
     e.delete(0,END)
     if n == 1:
@@ -95,6 +117,10 @@ def field_submit(number,n):
         global cipher4
         cipher4 = str(n4)
 
+    cipher.delete(0,END)
+    cipher.insert(0, cipher1+cipher2+cipher3+cipher4)
+
+# Checking the submitted guess against the correct answer + hints
 def check_correct(ans):
     global image_label
     global turns
@@ -113,17 +139,13 @@ def check_correct(ans):
     if answer == submit:
         result2.delete(0,END)
         result2.insert(0,"You defused the bomb! Well done!")
-        '''
-        result2.grid_forget()
-        result2 = Text(root, height=3, width=25, borderwidth=3)
-        result2.grid(row=11, column=5)
-        '''
+
         image_label.grid_forget()
-        image_label = Label(image=win)
+        image_label = Label(image=win, borderwidth=5)
         image_label.grid(row=12, column=5)
         submission.grid_forget()
 
-        try_again = Button(root,text="Press to try again", padx=40, command=start_over)
+        try_again = Button(root,text="Press to try again", padx=40, pady=5, command=start_over)
         try_again.grid(row=9, column=2)
 
         hints.insert(END,submit)
@@ -132,11 +154,7 @@ def check_correct(ans):
         
         result2.delete(0,END)
         result2.insert(0,"Please try again.")
-        '''
-        result2.grid_forget()
-        result2 = Text(root, height=3, width=25, borderwidth=3)
-        result2.grid(row=11, column=5)
-        '''
+
         if cipher1 == answer[0]:
             exact += 1
         if cipher1 == answer[1]:
@@ -173,63 +191,55 @@ def check_correct(ans):
         if cipher4 == answer[3]:
             exact += 1
                       
-        guesses.append(f'{submit}-({exact}/{correct}) ')
+        guesses.append(f'{submit}-({exact}/{correct})\n')
         
         result2.delete(0,END)
         result2.insert(0,((f'{submit}: {exact} numbers are in the correct position / ') + (f'{correct} numbers are correct but in the wrong position.')))
-        '''
-        result2.grid_forget()
-        result2 = Text(root, height=3, width=25, borderwidth=3)
-        result2.grid(row=11, column=5)
-        '''
         
-        hints.insert(END,guesses[current] + "\n")
+        hints.insert(END,guesses[current])
 
 
         if turns == 0:
             
             result2.delete(0,END)
             result2.insert(0, "GAMEOVER")
-            '''
-            result2.grid_forget()
-            result2 = Text(root, height=3, width=25, borderwidth=3)
-            result2.grid(row=11, column=5)
-            '''
 
         image_label.grid_forget()
-        image_label = Label(image=bomb_list[turns-1])
+        image_label = Label(image=bomb_list[turns-1], borderwidth=5)
         image_label.grid(row=12, column=5)
         if turns == 0:
             submission.grid_forget()
             image_label.grid_forget()
-            image_label = Label(image=lose)
+            image_label = Label(image=lose, borderwidth=5)
             image_label.grid(row=12, column=5)
 
-            try_again = Button(root,text="Press to try again", padx=40, command=start_over)
+            try_again = Button(root,text="Press to try again", padx=40, pady=5, command=start_over)
             try_again.grid(row=9, column=2)
 
+# Restart the program
 def start_over():
     os.execv(sys.executable, ['python'] + sys.argv)
+    os.execv(sys.executable, + sys.argv)
 
-cipher1, cipher2, cipher3, cipher4 = 0, 0, 0, 0
-cipher1 = str(cipher1)
-cipher2 = str(cipher2)
-cipher3 = str(cipher3)
-cipher4 = str(cipher4)
-
-image_label = Label(image=bomb9)
+# Initialize widgets
+# Image widget
+image_label = Label(image=bomb9, borderwidth=5)
 image_label.grid(row=12, column=5)
+
+# Exit button widget
 button_exit = Button(root, text="Exit Program", command=root.quit)
 button_exit.grid(row=12, column=2)
 
+# Text widget - Rules
 gameLabel = Label(root, text="Defuse the bomb!", padx=10, pady=5)
 gameLabel.grid(row=0, column=2)
 rulesLabel = Label(root, text="RULES").grid(row=1,column=5)
-rules1Label = Label(root, text="1) Select a number unique to each Cipher box.", padx=5).grid(row=2, column=5,)
+rules1Label = Label(root, text="1) Select a number unique to each Cipher box.", padx=5).grid(row=2, column=5)
 rules2label = Label(root, text="2) Select the Cipher key to input your guess.", padx=8).grid(row=3, column=5)
 rules3label = Label(root, text="3) You have 10 attempts to defuse the bomb.", padx=5).grid(row=4,column=5)
 rules4label = Label(root, text="4) Use the hints provided to determine the solution.").grid(row=5,column=5)
 
+# Number button widgets
 num1 = Button(root, text="1", padx=40, pady=15, borderwidth=3, command=lambda: button_click(1)).grid(row=2, column=0)
 num2 = Button(root, text="2", padx=40, pady=15, borderwidth=3, command=lambda: button_click(2)).grid(row=2, column=1)
 num3 = Button(root, text="3", padx=40, pady=15, borderwidth=3, command=lambda: button_click(3)).grid(row=2, column=2)
@@ -241,34 +251,39 @@ num8 = Button(root, text="8", padx=40, pady=15, borderwidth=3, command=lambda: b
 num9 = Button(root, text="9", padx=40, pady=15, borderwidth=3, command=lambda: button_click(9)).grid(row=4, column=3)
 num0 = Button(root, text="0", padx=40, pady=15, borderwidth=3, command=lambda: button_click(0)).grid(row=4, column=4)
 
-e = Entry(root, width=5, borderwidth=3)
+e = Entry(root, width=2, borderwidth=3, fg='black', bg='yellow')
 e.grid(row=7, column=2, padx=5, pady=5)
 
+# Cipher button widgets
 cipher_box1 = Button(root, text="CIPHER KEY 1", padx=10, pady=15, borderwidth=3, command=lambda: field_submit(num,1))
 cipher_box1.grid(row=8,column=0)
 cipher_box2 = Button(root, text="CIPHER KEY 2", padx=10, pady=15, borderwidth=3, command=lambda: field_submit(num,2))
-cipher_box2.grid(row=8,column=1,columnspan=1)
+cipher_box2.grid(row=8,column=1)
 cipher_box3 = Button(root, text="CIPHER KEY 3", padx=10, pady=15, borderwidth=3, command=lambda: field_submit(num,3))
 cipher_box3.grid(row=8,column=3)
 cipher_box4 = Button(root, text="CIPHER KEY 4", padx=10, pady=15, borderwidth=3, command=lambda: field_submit(num,4))
 cipher_box4.grid(row=8,column=4)
 
 c1 = Entry(root, width=5, borderwidth=3)
-c1.grid(row=9, column=0, padx=10)
+c1.grid(sticky= 'n', row=9, column=0, padx=10)
 c1.insert(0,0)
 c2 = Entry(root, width=5, borderwidth=3)
-c2.grid(row=9, column=1, padx=10)
+c2.grid(sticky= 'n', row=9, column=1, padx=10)
 c2.insert(0,0)
 c3 = Entry(root, width=5, borderwidth=3)
-c3.grid(row=9, column=3, padx=10)
+c3.grid(sticky= 'n', row=9, column=3, padx=10)
 c3.insert(0,0)
 c4 = Entry(root, width=5, borderwidth=3)
-c4.grid(row=9, column=4, padx=10)
+c4.grid(sticky= 'n', row=9, column=4, padx=10)
 c4.insert(0,0)
 
-submission = Button(root,text="Attempt to defuse the bomb", padx=10, command=lambda: check_correct(answer))
-submission.grid(row=9, column=2)
+cipher = Entry(root, width=4, borderwidth=3, fg='white', bg='red')
+cipher.grid(sticky='n', row=9, column=2)
+cipher.insert(0, cipher1 + cipher2 + cipher3 + cipher4)
 
+# Submit button widget
+submission = Button(root,text="Attempt to defuse the bomb", padx=10, pady=5, command=lambda: check_correct(answer))
+submission.grid(row=9, column=2)
 
 result1 = Label(root,text="Results:")
 result1.grid(row=10, column=0)
@@ -276,7 +291,7 @@ result2 = Entry(root, width=82, borderwidth=3)
 result2.grid(row=11, column=0, columnspan=5)
 
 hintslabel = Label(root, text="PREVIOUS HINTS").grid(row=8, column=5)
-hints = Text(root, height= 10, width=15, borderwidth=3)
+hints = Text(root, height= 10, width=10, borderwidth=3)
 hints.grid(row=9, column=5)
 
 
