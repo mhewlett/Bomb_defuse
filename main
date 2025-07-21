@@ -1,15 +1,17 @@
 from tkinter import *
 from PIL import ImageTk, Image
 import random
+import os
+import sys
 
 
 root = Tk()
 root.title("Defuse the bomb!")
 root.iconbitmap("bombicon.ico")
 loop ='y'
-
+turns = 10
+guesses =[]
 num = 0
-
 
 rand1 = random.randint(0, 9)
 
@@ -27,6 +29,7 @@ while rand4 == rand3 or rand4 == rand2 or rand4 == rand1:
 
 # Concatenate the variables into a single answer
 answer = str(rand1) + str(rand2) + str(rand3) + str(rand4)
+
 bomb_img9 = ("bomb9.png")
 bomb_img8 = ("bomb8.png")
 bomb_img7 = ("bomb7.png")
@@ -54,13 +57,6 @@ lose = ImageTk.PhotoImage(Image.open(lose_img))
 win = ImageTk.PhotoImage(Image.open(win_img))
 
 bomb_list = [bomb0, bomb1, bomb2, bomb3, bomb4, bomb5, bomb6, bomb7, bomb8, bomb9]
-
-
-turns = 10
-guesses =[]
-
-
-
 
 
 def button_click(number):
@@ -100,7 +96,7 @@ def field_submit(number,n):
         cipher4 = str(n4)
 
 def check_correct(ans):
-    global my_label
+    global image_label
     global turns
     global submission
     
@@ -122,12 +118,12 @@ def check_correct(ans):
         result2 = Text(root, height=3, width=25, borderwidth=3)
         result2.grid(row=11, column=5)
         '''
-        my_label.grid_forget()
-        my_label = Label(image=win)
-        my_label.grid(row=12, column=5)
+        image_label.grid_forget()
+        image_label = Label(image=win)
+        image_label.grid(row=12, column=5)
         submission.grid_forget()
 
-        try_again = Button(root,text="Press to try again", padx=40, command=start_over, state=DISABLED)
+        try_again = Button(root,text="Press to try again", padx=40, command=start_over)
         try_again.grid(row=9, column=2)
 
         hints.insert(END,submit)
@@ -200,20 +196,20 @@ def check_correct(ans):
             result2.grid(row=11, column=5)
             '''
 
-        my_label.grid_forget()
-        my_label = Label(image=bomb_list[turns-1])
-        my_label.grid(row=12, column=5)
+        image_label.grid_forget()
+        image_label = Label(image=bomb_list[turns-1])
+        image_label.grid(row=12, column=5)
         if turns == 0:
             submission.grid_forget()
-            my_label.grid_forget()
-            my_label = Label(image=lose)
-            my_label.grid(row=12, column=5)
+            image_label.grid_forget()
+            image_label = Label(image=lose)
+            image_label.grid(row=12, column=5)
 
-            try_again = Button(root,text="Press to try again", padx=40, command=start_over, state=DISABLED)
+            try_again = Button(root,text="Press to try again", padx=40, command=start_over)
             try_again.grid(row=9, column=2)
 
 def start_over():
-    return
+    os.execv(sys.executable, ['python'] + sys.argv)
 
 cipher1, cipher2, cipher3, cipher4 = 0, 0, 0, 0
 cipher1 = str(cipher1)
@@ -221,17 +217,17 @@ cipher2 = str(cipher2)
 cipher3 = str(cipher3)
 cipher4 = str(cipher4)
 
-my_label = Label(image=bomb9)
-my_label.grid(row=12, column=5)
+image_label = Label(image=bomb9)
+image_label.grid(row=12, column=5)
 button_exit = Button(root, text="Exit Program", command=root.quit)
 button_exit.grid(row=12, column=2)
 
 gameLabel = Label(root, text="Defuse the bomb!", padx=10, pady=5)
 gameLabel.grid(row=0, column=2)
 rulesLabel = Label(root, text="RULES").grid(row=1,column=5)
-rules1Label = Label(root, text="1) Select a number unique to each Cipher box.").grid(row=2, column=5,)
-rules2label = Label(root, text="2) Select the Cipher key to input your guess.").grid(row=3, column=5)
-rules3label = Label(root, text="3) You have 10 attempts to defuse the bomb.").grid(row=4,column=5)
+rules1Label = Label(root, text="1) Select a number unique to each Cipher box.", padx=5).grid(row=2, column=5,)
+rules2label = Label(root, text="2) Select the Cipher key to input your guess.", padx=8).grid(row=3, column=5)
+rules3label = Label(root, text="3) You have 10 attempts to defuse the bomb.", padx=5).grid(row=4,column=5)
 rules4label = Label(root, text="4) Use the hints provided to determine the solution.").grid(row=5,column=5)
 
 num1 = Button(root, text="1", padx=40, pady=15, borderwidth=3, command=lambda: button_click(1)).grid(row=2, column=0)
@@ -285,4 +281,3 @@ hints.grid(row=9, column=5)
 
 
 root.mainloop()
-
