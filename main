@@ -1,3 +1,4 @@
+
 from tkinter import *
 from PIL import ImageTk, Image
 import random
@@ -221,8 +222,7 @@ def check_correct(ans):
             if exact == 0:
 
                 if correct == 0:
-                    result2.insert(END,((f'{submit}:\n{exact} numbers are in the correct position.\n') + 
-                 (f'{correct} numbers are correct.')))
+                    result2.insert(END,((f'{submit}:\n{exact} numbers are correct.')))
 
                 if correct == 1:
                     result2.insert(END,((f'{submit}:\n{exact} numbers are in the correct position.\n') + 
