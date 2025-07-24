@@ -129,7 +129,6 @@ def check_correct(ans):
     global turns
     global submission
     
-
     current = (10 - turns)
     
     answer = str(ans)
@@ -140,8 +139,6 @@ def check_correct(ans):
     turns -= 1
     
     if answer == submit:
-        #result2.delete(0,END)
-        #result2.insert(0,"You defused the bomb! Well done!")
 
         image_label.grid_forget()
         image_label = Label(image=win, borderwidth=5)
@@ -155,9 +152,6 @@ def check_correct(ans):
 
     else:
         
-        #result2.delete(0,END)
-        #result2.insert(0,"Please try again.")
-
         if cipher1 == answer[0]:
             exact += 1
         if cipher1 == answer[1]:
