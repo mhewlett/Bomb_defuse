@@ -60,8 +60,6 @@ while rand4 == rand3 or rand4 == rand2 or rand4 == rand1:
 # Concatenate the variables into a single answer
 answer = str(rand1) + str(rand2) + str(rand3) + str(rand4)
 
-
-
 # Initialize images
 bomb9 = ImageTk.PhotoImage(Image.open(resource_path(bomb_img9)))
 bomb8 = ImageTk.PhotoImage(Image.open(resource_path(bomb_img8)))
@@ -146,6 +144,9 @@ def check_correct(ans):
 
         try_again = Button(button_frame, text="Press to try again", padx=40, pady=5, command=start_over)
         try_again.grid(row=0, column=0)
+
+        result2.delete('1.0',END)
+        result2.insert(END,("Congratulations!\nThe correct combination was " + str(answer)))
 
         hints.insert(END,submit)
 
@@ -297,10 +298,10 @@ button_frame.grid(row=3, column=0, padx=20, pady=10)
 # Text widget - Rules
 
 rulesLabel = Label(rules_frame, text="RULES").grid(row=0,column=0)
-rules1Label = Label(rules_frame, text="1) Select a number unique to each Cipher box.", padx=5).grid(sticky=W, row=1, column=0)
-rules2label = Label(rules_frame, text="2) Select the Cipher key to input your guess.", padx=5).grid(sticky=W, row=2, column=0)
-rules3label = Label(rules_frame, text="3) You have 10 attempts to defuse the bomb.", padx=5).grid(sticky=W, row=3,column=0)
-rules4label = Label(rules_frame, text="4) Use the hints provided to determine the solution.").grid(sticky=W, row=4,column=0)
+rules1Label = Label(rules_frame, text="1) Select a number unique to each Cipher box.").grid(sticky=W, row=1, column=0)
+rules2label = Label(rules_frame, text="2) Select the Cipher key to input your guess.").grid(sticky=W, row=2, column=0)
+rules3label = Label(rules_frame, text="3) You have 10 attempts before the bomb triggers.").grid(sticky=W, row=3,column=0)
+rules4label = Label(rules_frame, text="4) Use the notes provided from your guesses to determine the solution.").grid(sticky=W, row=4,column=0)
 
 # Number button widgets
 num1 = Button(num_frame, text="1", padx=40, pady=15, borderwidth=3, command=lambda: button_click(1)).grid(row=0, column=0)
@@ -353,7 +354,7 @@ result1.grid(row=4, column=0)
 result2 = Text(results_frame, height=3, width=50, borderwidth=3)
 result2.grid(row=5, column=0, columnspan=5)
 
-hintslabel = Label(hints_frame, text="PREVIOUS HINTS").grid(row=1, column=0)
+hintslabel = Label(hints_frame, text="PREVIOUS NOTES").grid(row=1, column=0)
 hints = Text(hints_frame, height= 10, width=10, borderwidth=3)
 hints.grid(row=2, column=0, rowspan=1)
 
